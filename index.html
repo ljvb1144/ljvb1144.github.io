@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lauren Vriens — How to Think When Machines Think Faster</title>
+  <meta name="description" content="Lauren Vriens works at the intersection of human judgment and AI systems. Executive advisor, keynote speaker, co-founder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0C0C0C;
+      --bg-elevated: #141414;
+      --bg-card: #1C1C1C;
+      --text-primary: #F2EFEA;
+      --text-secondary: #B0AAA0;
+      --text-muted: #9E9890;
+      --accent: #E8543E;
+      --accent-glow: rgba(232, 84, 62, 0.15);
+      --line: rgba(240, 237, 232, 0.1);
+      --line-hover: rgba(240, 237, 232, 0.18);
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'Outfit', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    section[id] {
+      scroll-margin-top: 80px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(12, 12, 12, 0.85);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav .name {
+      font-family: var(--body); font-size: 0.9rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-primary); text-decoration: none; font-weight: 500;
+    }
+
+    nav .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+
+    nav .nav-links a {
+      font-family: var(--mono); font-size: 0.8rem;
+      letter-spacing: 0.06em; color: var(--text-secondary);
+      text-decoration: none; transition: color 0.3s ease; font-weight: 300;
+    }
+
+    nav .nav-links a:hover { color: var(--text-primary); }
+    nav .nav-links a.cta-nav { color: var(--accent); font-weight: 400; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-text-col {
+      padding: 0 4rem 6rem 3rem;
+      align-self: end;
+      position: relative; z-index: 2;
+    }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.8rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem; font-weight: 400;
+      opacity: 0; animation: fadeIn 0.6s ease 0.3s forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+      line-height: 1.08; letter-spacing: -0.025em;
+      font-weight: 400; margin-bottom: 1.8rem;
+      opacity: 0; animation: fadeIn 0.6s ease 0.5s forwards;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.25rem; color: var(--text-secondary);
+      line-height: 1.7; max-width: 480px; font-weight: 300;
+      opacity: 0; animation: fadeIn 0.6s ease 0.7s forwards;
+    }
+
+    .hero-image-col {
+      position: relative; height: 100vh; overflow: hidden;
+    }
+
+    .hero-image-col img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 15%;
+      filter: contrast(1.05);
+    }
+
+    .hero-image-col::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, rgba(12,12,12,0.5) 20%, transparent 45%);
+    }
+
+    .hero-image-col::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 30%;
+      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+      z-index: 1;
+    }
+
+    .hero-line {
+      position: absolute; bottom: 0; left: 3rem; right: 3rem;
+      height: 1px; background: var(--line); z-index: 2;
+    }
+
+    /* ─── METRICS ─── */
+    .metrics {
+      padding: 3.5rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metrics-inner {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2rem; max-width: 1100px;
+    }
+
+    .metric { opacity: 0; animation: fadeIn 0.6s ease forwards; }
+    .metric:nth-child(1) { animation-delay: 0.9s; }
+    .metric:nth-child(2) { animation-delay: 1s; }
+    .metric:nth-child(3) { animation-delay: 1.1s; }
+    .metric:nth-child(4) { animation-delay: 1.2s; }
+
+    .metric-value {
+      font-family: var(--display); font-size: 2.2rem; font-weight: 400;
+      letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2;
+    }
+
+    .metric-value span { color: var(--accent); }
+
+    .metric-label {
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--text-secondary); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-top: 0.5rem;
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      padding: 7rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-grid {
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 6rem; max-width: 1100px;
+    }
+
+    .section-tag {
+      font-family: var(--mono); font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary); padding-top: 0.3rem;
+    }
+
+    .about-content { display: grid; gap: 0; }
+
+    .credential {
+      display: grid; grid-template-columns: 44px 1fr;
+      gap: 1rem; align-items: start;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--line);
+      transition: border-color 0.3s ease;
+    }
+
+    .credential:last-child { border-bottom: none; }
+    .credential:hover { border-color: var(--line-hover); }
+
+    .credential-idx {
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--text-secondary); padding-top: 0.2rem;
+    }
+
+    .credential-text {
+      font-size: 1.15rem; line-height: 1.65; color: var(--text-secondary);
+    }
+
+    .credential-text strong { color: var(--text-primary); font-weight: 500; }
+    .credential-highlight { color: var(--accent); font-weight: 400; }
+
+    /* ─── THESIS ─── */
+    .thesis {
+      padding: 7rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .thesis-grid {
+      display: grid; grid-template-columns: 200px 1fr 1fr;
+      gap: 4rem; max-width: 1100px; align-items: start;
+    }
+
+    .thesis-text { grid-column: 2 / 3; }
+
+    .thesis-lead {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+      line-height: 1.4; letter-spacing: -0.01em;
+      margin-bottom: 2rem; font-weight: 400;
+    }
+
+    .thesis-lead em { color: var(--accent); font-style: italic; }
+
+    .thesis-body p {
+      font-size: 1.1rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 1.1rem;
+    }
+
+    .thesis-body p:last-child { margin-bottom: 0; }
+
+    .thesis-image {
+      grid-column: 3 / 4;
+      position: relative; height: 420px;
+    }
+
+    .thesis-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%) contrast(1.05);
+    }
+
+    .thesis-image::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--bg) 0%, transparent 30%);
+    }
+
+    /* ─── SERVICES ─── */
+    .services {
+      padding: 7rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .services-header {
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 6rem; max-width: 1100px; margin-bottom: 3rem;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: 200px repeat(3, 1fr);
+      gap: 1.5rem; max-width: 1100px;
+    }
+
+    .service-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--line);
+      padding: 2.5rem 2rem 2rem;
+      position: relative;
+      transition: all 0.4s ease;
+      cursor: default;
+    }
+
+    .service-card:first-child { grid-column: 2; }
+
+    .service-card:hover {
+      border-color: var(--line-hover);
+      background: var(--bg-card);
+      transform: translateY(-2px);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px; right: -1px;
+      height: 2px; background: var(--accent);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-idx {
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--text-secondary); letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--display); font-size: 1.4rem;
+      font-weight: 400; margin-bottom: 0.9rem;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      font-size: 1rem; color: var(--text-secondary);
+      line-height: 1.75; font-weight: 300;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      padding: 10rem 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative; max-width: 620px; margin: 0 auto;
+    }
+
+    .cta-inner .cta-tag {
+      font-family: var(--mono); font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 2rem;
+    }
+
+    .cta-inner h2 {
+      font-family: var(--display);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 400; line-height: 1.2;
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+
+    .cta-inner p {
+      font-size: 1.1rem; color: var(--text-secondary);
+      margin-bottom: 3rem; line-height: 1.7;
+    }
+
+    .cta-button {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      background: var(--accent); color: var(--bg);
+      padding: 1.1rem 2.8rem; text-decoration: none;
+      font-family: var(--mono); font-size: 0.85rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      font-weight: 400; transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #f06a56;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+
+    .cta-button svg {
+      width: 16px; height: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .cta-button:hover svg { transform: translateX(3px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--line);
+    }
+
+    footer .footer-left {
+      font-family: var(--mono); font-size: 0.75rem;
+      color: var(--text-muted); letter-spacing: 0.06em;
+    }
+
+    footer .social-links { display: flex; gap: 2rem; }
+
+    footer .social-links a {
+      font-family: var(--mono); font-size: 0.8rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer .social-links a:hover { color: var(--text-primary); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.hidden { opacity: 0; transform: translateY(20px); }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-stagger .reveal:nth-child(1) { transition-delay: 0s; }
+    .reveal-stagger .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .reveal-stagger .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .reveal-stagger .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .reveal-stagger .reveal:nth-child(5) { transition-delay: 0.32s; }
+    .reveal-stagger .reveal:nth-child(6) { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.25rem 2rem; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-text-col { padding: 10rem 2rem 3rem; order: 2; }
+      .hero-image-col { height: 55vh; order: 1; }
+      .hero-image-col::after {
+        background: linear-gradient(to top, var(--bg) 0%, rgba(12,12,12,0.3) 40%, transparent 70%);
+      }
+      .hero-line { left: 2rem; right: 2rem; }
+      .metrics { padding: 2.5rem 2rem; }
+      .metrics-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .about, .thesis, .services { padding: 5rem 2rem; }
+      .about-grid, .services-header { grid-template-columns: 1fr; gap: 2rem; }
+      .thesis-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .thesis-text { grid-column: 1; }
+      .thesis-image { grid-column: 1; height: 350px; }
+      .services-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .service-card:first-child { grid-column: 1; }
+      .carousel-item { width: 400px; height: 270px; }
+      .carousel-header { padding: 0 2rem; }
+      .cta-section { padding: 6rem 2rem; }
+      footer { padding: 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.5rem; }
+      nav .nav-links { gap: 1.5rem; }
+      nav .nav-links a { font-size: 0.7rem; }
+      .hero-text-col { padding: 8rem 1.5rem 2.5rem; }
+      .metrics { padding: 2rem 1.5rem; }
+      .metrics-inner { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .metric-value { font-size: 1.6rem; }
+      .about, .thesis, .services { padding: 4rem 1.5rem; }
+      .carousel-item { width: 320px; height: 220px; }
+      .carousel-header { padding: 0 1.5rem; }
+      .carousel-arrow { width: 40px; height: 40px; }
+      .cta-section { padding: 5rem 1.5rem; }
+      .cta-section::before { width: 300px; height: 300px; }
+      footer { flex-direction: column; gap: 1.5rem; padding: 2rem 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="name">Lauren Vriens</a>
+    <div class="nav-links">
+      <a href="#about">Background</a>
+      <a href="#thesis">My Take</a>
+      <a href="#services">Work With Me</a>
+      <a href="#contact" class="cta-nav">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text-col">
+      <p class="hero-tag">Enterprise AI &mdash; Advisory &mdash; Speaking</p>
+      <h1>How to Think When Machines Think <em>Faster</em></h1>
+      <p class="hero-sub">I work at the intersection of human judgment and AI systems.</p>
+    </div>
+    <div class="hero-image-col">
+      <img src="hero.jpg" alt="Lauren Vriens keynote at Extraordinary Women on Boards">
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text-col">
+      <p class="hero-tag">Enterprise AI &mdash; Advisory &mdash; Speaking</p>
+      <h1>How to Think When Machines Think <em>Faster</em></h1>
+      <p class="hero-sub">I work at the intersection of human judgment and AI systems.</p>
+    </div>
+    <div class="hero-image-col">
+      <img src="ceo-connection.JPG" alt="Lauren Vriens keynote at Extraordinary Women on Boards">
+    </div>
+    <div class="hero-line"></div>
+  </section>
+
+  <section class="metrics">
+    <div class="metrics-inner">
+      <div class="metric">
+        <div class="metric-value">$340M<span>+</span></div>
+        <div class="metric-label">GenAI business built at Accenture</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">25M<span>+</span></div>
+        <div class="metric-label">LinkedIn views on AI</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">$50M</div>
+        <div class="metric-label">EV startup scaled in 1.5 years</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">TEDx</div>
+        <div class="metric-label">speaker</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-grid">
+      <p class="section-tag">Background</p>
+      <div class="about-content reveal-stagger">
+        <div class="credential reveal">
+          <span class="credential-idx">01</span>
+          <span class="credential-text">Currently: <strong>Co-Founder / Chief Product &amp; AI Officer</strong> &mdash; stealth AI startup, New York City</span>
+        </div>
+        <div class="credential reveal">
+          <span class="credential-idx">02</span>
+          <span class="credential-text">Built Accenture's first enterprise GenAI product &rarr; <strong class="credential-highlight">$340M business</strong></span>
+        </div>
+        <div class="credential reveal">
+          <span class="credential-idx">03</span>
+          <span class="credential-text">General Manager at EV startup Revel &rarr; Scaled to <strong class="credential-highlight">$50M business</strong> in 1.5 years</span>
+        </div>
+        <div class="credential reveal">
+          <span class="credential-idx">04</span>
+          <span class="credential-text">Advised executives at <strong>Waymo, Stripe, General Mills, Arvest, FINRA</strong>, and others</span>
+        </div>
+        <div class="credential reveal">
+          <span class="credential-idx">05</span>
+          <span class="credential-text">Speaker: <strong>TEDx, Extraordinary Women on Boards, Microsoft, Betaworks, a16z NY Tech Week</strong></span>
+        </div>
+        <div class="credential reveal">
+          <span class="credential-idx">06</span>
+          <span class="credential-text">Content creator with <strong class="credential-highlight">25M+ LinkedIn views</strong> on AI. Partnerships with monday.com, Maven, and Airwallex</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis" id="thesis">
+    <div class="thesis-grid">
+      <p class="section-tag reveal">My Take</p>
+      <div class="thesis-text reveal">
+        <p class="thesis-lead">AI is exposing a <em>cognitive gap</em> for leaders.</p>
+        <div class="thesis-body">
+          <p>The volume, velocity, and complexity created by AI now exceed what individual cognition, and traditional management systems, can comfortably handle.</p>
+          <p>Leaders aren&rsquo;t underperforming. They&rsquo;re overloaded.</p>
+          <p>The answer isn&rsquo;t more process, information, or strategy. It&rsquo;s a new way of thinking &mdash; and it can be learned.</p>
+          <p>That&rsquo;s the intersection I work in: human judgment and artificial intelligence.<br>
+          → Designing systems that direct commercial attention.<br>
+          → And teaching leaders how to think when machines think faster.</p>
+        </div>
+      </div>
+      <div class="thesis-image reveal">
+        <img src="ceo-connection.JPG" alt="Lauren Vriens speaking on stage">
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="services-header">
+      <p class="section-tag">Ways to Work With Me</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-idx">001</div>
+        <h3>1:1 Executive Advisory</h3>
+        <p>Sounding board sessions with founders and executives operating under extreme cognitive load.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-idx">002</div>
+        <h3>Workshops &amp; Speaking</h3>
+        <p>Customized workshops and keynotes for leadership teams navigating AI-driven change.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-idx">003</div>
+        <h3>Content &amp; Partnerships</h3>
+        <p>Selective creator collaborations at conferences and on social media.</p>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section" id="contact">
+    <div class="cta-inner reveal">
+      <p class="cta-tag">Limited Availability</p>
+      <h2>I work with a small number of people and organizations each year.</h2>
+      <p>If you're navigating the intersection of leadership and AI, let's talk.</p>
+      <a href="/cdn-cgi/l/email-protection#2c5a5e4549425f02404d595e49426c4b414d4540024f4341" class="cta-button">
+        Send me an email
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">&copy; 2026 Lauren Vriens</div>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/laurenvriens" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://instagram.com/lauren.vriens" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@lauren.vriens" target="_blank" rel="noopener">TikTok</a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Scroll reveal
+    // First hide all reveal elements, then reveal on scroll
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('hidden'));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('hidden');
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
