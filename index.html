@@ -318,6 +318,117 @@
       line-height: 1.75; font-weight: 300;
     }
 
+    /* ─── PHOTO CAROUSEL ─── */
+    .carousel-section {
+      padding: 3.5rem 0 0;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .carousel-label {
+      font-family: var(--mono); font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .carousel-arrows {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .carousel-arrow {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-elevated);
+      border: 1px solid var(--line);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-arrow:hover {
+      border-color: var(--line-hover);
+      color: var(--text-primary);
+      background: var(--bg-card);
+    }
+
+    .carousel-arrow:active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .carousel-arrow svg {
+      width: 20px; height: 20px;
+    }
+
+    .carousel-viewport {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      will-change: transform;
+    }
+
+    .carousel-item {
+      flex-shrink: 0;
+      width: 520px; height: 350px;
+      overflow: hidden;
+      position: relative;
+      margin-right: 16px;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+    }
+
+    .carousel-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%) contrast(1.05);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .carousel-item:hover img {
+      filter: grayscale(0%) contrast(1.1);
+      transform: scale(1.02);
+    }
+
+    .carousel-item::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(12,12,12,0.1);
+      transition: background 0.4s ease;
+      pointer-events: none;
+    }
+
+    .carousel-item:hover::after { background: rgba(12,12,12,0); }
+
+    .carousel-item .photo-caption {
+      position: absolute;
+      bottom: 1rem; left: 1.25rem;
+      font-family: var(--mono); font-size: 0.7rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(240,237,232,0.85);
+      z-index: 2;
+      background: rgba(12,12,12,0.6);
+      padding: 0.3rem 0.6rem;
+      backdrop-filter: blur(8px);
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+
+    .carousel-item:hover .photo-caption { opacity: 1; }
+
     /* ─── CTA ─── */
     .cta-section {
       padding: 10rem 3rem;
@@ -487,17 +598,6 @@
     <div class="hero-image-col">
       <img src="hero.jpg" alt="Lauren Vriens keynote at Extraordinary Women on Boards">
     </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-text-col">
-      <p class="hero-tag">Enterprise AI &mdash; Advisory &mdash; Speaking</p>
-      <h1>How to Think When Machines Think <em>Faster</em></h1>
-      <p class="hero-sub">I work at the intersection of human judgment and AI systems.</p>
-    </div>
-    <div class="hero-image-col">
-      <img src="ceo-connection.JPG" alt="Lauren Vriens keynote at Extraordinary Women on Boards">
-    </div>
     <div class="hero-line"></div>
   </section>
 
@@ -563,9 +663,7 @@
           <p>The volume, velocity, and complexity created by AI now exceed what individual cognition, and traditional management systems, can comfortably handle.</p>
           <p>Leaders aren&rsquo;t underperforming. They&rsquo;re overloaded.</p>
           <p>The answer isn&rsquo;t more process, information, or strategy. It&rsquo;s a new way of thinking &mdash; and it can be learned.</p>
-          <p>That&rsquo;s the intersection I work in: human judgment and artificial intelligence.<br>
-          → Designing systems that direct commercial attention.<br>
-          → And teaching leaders how to think when machines think faster.</p>
+          <p>That&rsquo;s the intersection I work in: human judgment and artificial intelligence. Designing systems that direct commercial attention. And teaching leaders how to think when machines think faster.</p>
         </div>
       </div>
       <div class="thesis-image reveal">
@@ -596,12 +694,13 @@
       </div>
     </div>
   </section>
+
   <section class="cta-section" id="contact">
     <div class="cta-inner reveal">
       <p class="cta-tag">Limited Availability</p>
       <h2>I work with a small number of people and organizations each year.</h2>
       <p>If you're navigating the intersection of leadership and AI, let's talk.</p>
-      <a href="/cdn-cgi/l/email-protection#2c5a5e4549425f02404d595e49426c4b414d4540024f4341" class="cta-button">
+      <a href="mailto:vriens.lauren@gmail.com" class="cta-button">
         Send me an email
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
       </a>
@@ -617,9 +716,8 @@
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Scroll reveal
-    // First hide all reveal elements, then reveal on scroll
+<script>
+    // Scroll reveal animation
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('hidden'));
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
